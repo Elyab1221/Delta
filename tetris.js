@@ -50,8 +50,8 @@ const colorEmptyBlock= 'gray';
 const colorGameOverOverlay= 'rgba(0,0,0,0.75)';
 const colorFont= 'white';
 const blockSize=30;
-const blockBackground= 'black';
-const gravity=1;
+const blockBackground= 'rgb(100, 100, 100)';
+const gravity=10;
 const gravacc=0.00001;
 const gravTreshold= 1000;
 
@@ -68,6 +68,7 @@ const inputKeys={
     ' ': 'hardDrop',
     r: 'restart',
 };
+const noRepeatInputs=['rotate','hardDrop']
 const width= gridCol*blockSize;
 const height= gridRow*blockSize;
 const sidebarWidth= sidebarWidthBlock*blockSize;
@@ -107,6 +108,7 @@ function createCurrentPieces(shapeId){
 function getInitialState(){
     return {
         isGameOver:false,
+        isPaused:false,
         score: 0,
         gravity:{
             progress:0,
@@ -227,10 +229,11 @@ function updateGravity(state,dt){
         moveCurrentPieceDown(state);
     }
 }
-function handleInputState(input,dt){
+function handleInputState(input,dt,canRepeat=true){
     if(!input){
         return false;
     }
+    // if(!canRepeat){return false;}
     input.timer+=dt;
 
     switch(input.state){
@@ -239,6 +242,7 @@ function handleInputState(input,dt){
             input.timer=0;
             return true;
         case inputCharging:
+            if(!canRepeat){return false;}
             const ischarged=input.timer>=inputRepeatTreshold;
             if(ischarged){
                 input.state=inputRepeating;
@@ -246,6 +250,7 @@ function handleInputState(input,dt){
             }
             return ischarged;
         case inputRepeating:
+            if(!canRepeat){return false;}
             const shouldRepeat=input.timer>=inputRepeatInterval;
             if(shouldRepeat){
                 input.timer=0;
@@ -255,7 +260,7 @@ function handleInputState(input,dt){
 }
 function updateCurrentPiece(state,inputs,dt){
     const{grid,currentPiece}=state;
-    const isInputActive=(inputType)=>handleInputState(inputs[inputType],dt);
+    const isInputActive=(inputType)=>handleInputState(inputs[inputType],dt,!noRepeatInputs.includes(inputType));
 
     if(isInputActive('moveLeft')){
         moveCurrentPiece(grid,currentPiece,-1,0);
@@ -274,15 +279,14 @@ function updateCurrentPiece(state,inputs,dt){
     }
 }
 function update(state,inputs,dt){
-    if(state.isGameOver){
-        if(inputs.restart){
-            resetGameState(state);
+    if(state.isGameOver || state.isPaused){
+        return;
         }
-    }else{
+    
         updateCurrentPiece(state,inputs,dt);
         updateGravity(state,dt);
+    
     }
-}
 function drawBlock(ctx,color,x,y){
     ctx.fillStyle=color;
     ctx.fillRect(x+1,y+1,blockSize-1,blockSize-1)
@@ -296,6 +300,16 @@ function drawShape(ctx,shape,colorid,x,y){
                 drawBlock(ctx,color,x+j*blockSize,y+i*blockSize);
             }
         }
+    }
+}
+function drawOverlay(ctx,text){
+    {
+        ctx.fillStyle=colorGameOverOverlay;
+        ctx.fillRect(0,0,width,canvasHeight);
+        ctx.fillStyle=colorFont;
+        ctx.textAlign='center';
+        ctx.textBaseline='middle';
+        ctx.fillText(text,width/2,canvasHeight/2);
     }
 }
 function render(ctx,state){
@@ -337,12 +351,10 @@ function render(ctx,state){
     ctx.fillText(score,sidebarContentX,sidebarContenty+blockSize*6);
 
     if(state.isGameOver){
-        ctx.fillStyle=colorGameOverOverlay;
-        ctx.fillRect(0,0,width,canvasHeight);
-        ctx.fillStyle=colorFont;
-        ctx.textAlign='center';
-        ctx.textBaseline='middle';
-        ctx.fillText('game over!',width/2,canvasHeight/2);
+        drawOverlay(ctx,'game over!');
+    }
+    else if(state.isPaused){
+        drawOverlay(ctx,'paused')
     }
 }
 
@@ -354,26 +366,74 @@ function initCanvas(){
 
     return canvas.getContext('2d');
 }
-function startCollectingInputs(inputs){
-    function handleKeyEvents(event,inputValue){
-        if(event.repeat){
-            return;
-        }
-    const inputType=inputKeys[event.key];
+function newInput(){
+    return {state:inputinitial,timer:0};
+}
+function clearInputs(inputs){
+    Object.keys(inputs).forEach((key)=>delete inputs[key]);
+}
+function startCollectingInputs(inputs,actions){
+    window.addEventListener('keydown',(e)=>{
+        if(e.repeat||e.ctrlKey||e.metaKey||e.altKey){return;}
+    const key=e.key.toLowerCase();
+    if(key==='p'){actions.togglePause();return;}
+    if(key==='r'){actions.restart();return;}
+    
+    const inputType=inputKeys[e.key];
     if(inputType){
-        inputs[inputType]=inputValue;
+        e.preventDefault();
+        inputs[inputType]=newInput();
     }
-    }
-    window.addEventListener('keydown',(e)=>
-    handleKeyEvents(e,{state:inputinitial,timer:0}));
-    window.addEventListener('keyup',(e)=>handleKeyEvents(e,undefined));
+});
+    window.addEventListener('keyup',(e)=>{
+        const inputType=inputKeys[e.key];
+        if(inputType){
+            inputs[inputType]=undefined;
+        }
+    });}
+function startTouchControls(inputs){
+    document.querySelectorAll('#dpad button').forEach((button)=>{
+        const inputType=button.dataset.input;
+        const press=(e)=>{e.preventDefault(); inputs[inputType]=newInput();};
+        const release=()=>{inputs[inputType]=undefined;};
+
+        button.addEventListener('pointerdown',press);
+        button.addEventListener('pointerup',release);
+        button.addEventListener('pointercancel',release);
+        button.addEventListener('pointerleave',release);
+        button.addEventListener('contextmenu',(e)=>e.preventDefault());
+    });
+}
+function startMenuButtons(actions){
+    const pauseBtn=document.getElementById('pauseBtn');
+    pauseBtn.addEventListener('click',actions.togglePause);
+    document.getElementById('restartBtn').addEventListener('click',actions.restart);
+
+    //stopping clicked buttons from kept on click like in the orevius version space
+    document.querySelectorAll('button').forEach((button)=>{
+        button.addEventListener('mousedown',(e)=>e.preventDefault());
+    });
+    return pauseBtn;
 }
 function main(){
     const ctx=initCanvas();
     const state=getInitialState();
     const inputs={};
+    const actions={
+        togglePause(){
+            if(state.isGameOver){return;}
+            state.isPaused=!state.isPaused;
+            clearInputs(inputs);
+        },
+        restart(){
+            resetGameState(state);
+            clearInputs(inputs);
+        },
+    };
 
-    startCollectingInputs(inputs);
+    startCollectingInputs(inputs,actions);
+    startTouchControls(inputs);
+    const pauseBtn=startMenuButtons(actions);
     let previousTime=performance.now();
     function loop(currentTime){
         const MAX_DT=100;
@@ -381,6 +441,10 @@ function main(){
         previousTime=currentTime;
         update(state,inputs,dt);
         render(ctx,state);
+        const label=state.isPaused?'Resume':'Pause';
+        if(pauseBtn.textContent!==label){
+            pauseBtn.textContent=label;
+        }
 
         requestAnimationFrame(loop);   
     }

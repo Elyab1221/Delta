@@ -1,7 +1,9 @@
 html,
 body{
     width: 100%;
-    height: 100%;
+    min-height: 100vh;
+    flex-direction:column;
+    gap:16px;
     margin: 0;
     padding:0;
 }
@@ -13,6 +15,34 @@ body{
     background-color: black ;   
 }
 canvas{
-    border: 10px solid white;
+    display:block;
+    border: 0 0 0 10px solid white;
     border-radius: 7px;
+    width:min(500px,calc(100vw-60px),calc((100vh-300px)*5/6));
+    height: auto;
 }
+#buttons{display: flex; gap: 15px;}
+button{
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    background-color: #333;
+    border:2px solid #777; border-radius: 10px;
+    user-select:none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+button:active{background-color: #676;}
+#buttons button{padding: 10px 22px;}
+
+#dpad{
+    display: grid;
+    grid-template-columns: repeat(3,60px);
+    grid-template-rows: repeat(3,60px);
+    gap: 5px;
+}
+#dpad .up{grid-column: 2; grid-row: 1;}
+#dpad .left{grid-column: 1; grid-row: 2;}
+#dpad .mid{grid-column: 2; grid-row: 2; font-size: 15px;background-color: #7a227a;}
+#dpad .right{grid-column: 3; grid-row: 2;}
+#dpad .down{grid-column: 2; grid-row: 3;}
