@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        
+        <meta name="viewport" content="width=device-width,initial-scale=1">
         <link rel="stylesheet" href="snake.css">
         <title>
              snake
@@ -11,7 +11,14 @@
         <div id="gameContainer">
             <canvas id="gameboard" width="500" height="500" ></canvas>
                 <div id="score">0</div>
-                <button id="resetsc"> Reset </button>
+                <button id="resetsc"> Restart(R) </button>
+                <button id="pausebtn">pause(P)</button>
+                <div id="dpad">
+                    <button class="dir" data-key="38">▲ </button>
+                    <button class="dir" data-key="37">◀</button>
+                    <button class="dir" data-key="40">▼</button>
+                    <button class="dir" data-key="39">▶</button>
+                </div>
         </div> 
         <script src="snake.js"></script>
     </body>

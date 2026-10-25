@@ -2,9 +2,36 @@ body{
     background-color: rgb(0, 255, 255);
 }
 #gameboard{
+    box-sizing: border-box;
+    max-width: 100%;
+    height: auto;
+    touch-action: none;
     border: 7px solid rgb(168, 12, 12);
+    background-color: yellow;
 }
-
+#dpad{
+    display: none;
+    grid-template-areas: 
+    ". up ."
+    "left down right";
+    gap: 10px;
+    justify-content:center;
+    margin-top: 20px;
+}
+#dpad .dir{
+    width: 80px;
+    height: 80px;
+    font-size: 32px;
+    border: 5px solid ;
+    border-radius: 15px;
+    background-color: burlywood ;
+    touch-action: manipulation;
+    user-select: none;
+}
+#dpad.dir[data-key="38"]{grid-area: up;}
+#dpad.dir[data-key="37"]{grid-area: left;}
+#dpad.dir[data-key="40"]{grid-area: down;}
+#dpad.dir[data-key="39"]{grid-area: right;}
 #gameContainer{
     text-align: center;
     color: rgb(15, 6, 148);
@@ -12,15 +39,24 @@ body{
 #score{
     font-family: "arial", cursive;
     font-size: 100px;
+    margin-left: -25px;
+    margin-bottom: 30px;
 }
 
-#resetsc{
+#resetsc,#pausebtn{
     background-color: burlywood;
     font-family: Arial, Helvetica, sans-serif;
+    margin-right: 20px;
     font-size: 22px;
-    width: 100px;
+    width: 130px;
     height: 50px;
     border: 4px solid;
     border-radius: 15px;
     cursor: pointer;
+}
+@media (hover:none) and (pointer:coarse ){
+    #dpad{display: grid;}
+}
+@media (max-Width:600px){
+ #score{font-size: 60px;margin-left:0; margin-bottom:10px ;}
 }

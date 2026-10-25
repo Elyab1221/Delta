@@ -2,13 +2,15 @@ const gameboard=document.querySelector("#gameboard");
 const ctx= gameboard.getContext("2d");
 const scoreText= document.querySelector("#score");
 const resetg= document.querySelector("#resetsc");
+const pauseBtn= document.querySelector("#pausebtn");
 const gameWidth= gameboard.width;
 const gameHeight=gameboard.height;
-const boardBackground="white";
-const snakeColor="black";
-const snakeBorder="white";
+const boardBackground="green";
+const snakeColor="yellow";
+const snakeBorder="black";
 const foodColor="red";
 const unitsize=25;
+let pause=false;
 let timer;
 let running= false;
 let xvelocity= unitsize;
@@ -25,7 +27,34 @@ let snake =[
 ];
 
 window.addEventListener("keydown",changeDirection);
+pauseBtn.addEventListener("click",togglePause);
 resetg.addEventListener("click",resetGame);
+let touchStartx=0 ,touchStarty=0; 
+gameboard.addEventListener("touchstart",(e)=>{
+    touchStartX=e.touches[0].clientX;
+    touchStartY=e.touches[0].clientY;
+});
+
+gameboard.addEventListener("touchend",(e)=>{
+    const dx=e.changedTouches[0].clientX-touchStartX;
+    const dy=e.changedTouches[0].clientY-touchStartY;
+    if(Math.max(Math.abs(dx),Math.abs(dy))<30) return;
+
+    if(Math.abs(dx)>Math.abs(dy)){
+        changeDirection({keyCode: dx>0? 39:37});
+    }
+    else{
+        changeDirection({keyCode: dy>0?40:38});
+    }
+
+});
+
+document.querySelectorAll(".dir").forEach((btn)=>{
+    btn.addEventListener("pointerdown",(e)=>{
+        e.preventDefault();
+        changeDirection({keyCode: Number(btn.dataset.key)});
+    });
+});
 gameStart();
 // createFood();
 
@@ -132,6 +161,9 @@ function changeDirection(event){
     const goDown=(yvelocity== unitsize);
     const goRight=(xvelocity== unitsize);
     const goLeft=(xvelocity== -unitsize);
+ if(keyPressed==80){togglePause(); return;}
+ if(keyPressed==82){resetGame();return;}
+ if(pause) return;
 
     switch(true){
         case((keyPressed==LEFT || keyPressed==65) && !goRight):
@@ -175,13 +207,15 @@ for(let i=1;i<snake.length;i++){
 }
 }
 function displayGameOver(){
-    ctx.font= "50px MV Boli";
+    ctx.font= "25px MV Boli";
     ctx.fillStyle="black";
     ctx.textAlign="center";
-    ctx.fillText("GAME OVER!", gameWidth/2, gameHeight/2);
+    ctx.fillText("GAME OVER! press R to restart", gameWidth/2, gameHeight/2+40);
     running=false;
 };
 function resetGame(){
+    pause=false;
+    pauseBtn.textContent="pause";
     clearTimeout(timer);
     score=0;
     xvelocity=unitsize;
@@ -193,7 +227,27 @@ function resetGame(){
     {x:unitsize, y:0},
     {x:0,y:0},    
 ];
+
 gameStart();
 };
+function togglePause(){
+    if(!running) return;
+    pause=!pause;
+    pauseBtn.blur();
 
+    if(pause){
+        clearTimeout(timer);
+        pauseBtn.textContent="Resume";
+        ctx.fillStyle= "rgba(0,0,0,0.5)";
+        ctx.fillRect(0,0,gameWidth,gameHeight);
+        ctx.font="25px Arial";
+        ctx.fillStyle="white";
+        ctx.textAlign="center";
+        ctx.fillText("Game Paused!, goback and continue",gameWidth/2,gameHeight/2);
+    }
+    else{
+        pauseBtn.textContent="pause";
+        nextTick();
+    }
+}
 
