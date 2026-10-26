@@ -10,7 +10,9 @@ const snakeColor="yellow";
 const snakeBorder="black";
 const foodColor="red";
 const unitsize=25;
+const snakeLevel=getLevelFromUrl('snake');
 let pause=false;
+
 let timer;
 let running= false;
 let xvelocity= unitsize;
@@ -29,7 +31,7 @@ let snake =[
 window.addEventListener("keydown",changeDirection);
 pauseBtn.addEventListener("click",togglePause);
 resetg.addEventListener("click",resetGame);
-let touchStartx=0 ,touchStarty=0; 
+let touchStartX=0 ,touchStartY=0; 
 gameboard.addEventListener("touchstart",(e)=>{
     touchStartX=e.touches[0].clientX;
     touchStartY=e.touches[0].clientY;
@@ -74,7 +76,7 @@ function nextTick(){
             drawSnake();
             checkGameOver();
             nextTick();
-        },80)
+        },snakeSpeedMs(snakeLevel,score))
     }
     else{
         displayGameOver();
@@ -212,6 +214,7 @@ function displayGameOver(){
     ctx.textAlign="center";
     ctx.fillText("GAME OVER! press R to restart", gameWidth/2, gameHeight/2+40);
     running=false;
+    saveHighScore('snake',snakeLevel,score);
 };
 function resetGame(){
     pause=false;

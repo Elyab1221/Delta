@@ -1,0 +1,145 @@
+[hidden]{
+    display:none !important;
+}
+
+html,body{
+    margin:0;
+    padding:0;
+}
+body{
+    min-height:100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: black;
+    color:white;
+    font-family:Arial, Helvetica, sans-serif;
+    text-align:center;
+}
+.screen{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    width:100%;
+    max-width: 480px;
+    padding: 24px 20px;
+    box-sizing: border-box;
+}
+h1{
+    margin: 0;
+    font-size: clamp(42px,12vw,76px);
+    letter-spacing: 4px;
+    background-image: linear-gradient(90deg,aqua,purple);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent ;
+    color:transparent
+}
+h2{
+    margin:0;
+    font-size: 30px;
+}
+.tagline{
+    margin: 0;
+    color: #aaa;
+}
+
+button{
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    background-color: #333;
+    border:2px solid #777;
+    border-radius: 10px;
+    padding: 12px 12px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+button:hover{
+    background: #444;
+}
+button:active{
+    background-color: #676;
+}
+button.primary{
+    background-color: #71a227;
+    border-color:white;
+}
+button.primary:hover{
+    background-color: goldenrod;
+}
+button.big{
+    font-size: 25px;
+    padding: 15px 50px;
+}
+button.link{
+    background: none;
+    border:none;
+    color: #aaa;
+    font-size: 16px;
+}
+.cards{
+    display: flex;
+    gap: 15px;
+    width:100%;
+}
+.card{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding:28px 10px;
+    font-size:24px ;
+}
+.card .icon{font-size: 56px;}
+.options{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    width: 100%;
+}
+.panel{
+    width:100%;
+    box-sizing: border-box;
+    background:#111;
+    border:1px solid #333;
+    border-radius:12px;
+    padding:14px 16px;
+    text-align: left
+}
+.panel p{
+    margin:8px 0;
+    line-height:1.4;
+}
+
+#levelButtons{
+    display: flex;
+    flex-wrap: wrap;
+    gap:8px;
+    justify-content: center;
+}
+button.lvl{
+    min-width:55px;
+    padding: 10px 15px;
+    font-size:18px
+}
+button.lvl.selected{
+    background-color: gold;
+    border-color: white;
+}
+#scoreList li{
+    display:flex;
+    justify-content: space-between;
+    padding: 6px 4px;
+    border-bottom : 1px solid #333;
+}
+.note{
+    color:#aaa;
+    font-size: 15px;
+}

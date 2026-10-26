@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta name="viewport" content="width=device-width,initial-scale=1
+        <meta name="viewport" content="width=device-width,initial-scale=1,
         maximum-scale=1,user-scalable=no">
         <link rel="stylesheet" href="tetris.css">
         <title>
@@ -11,6 +11,7 @@
     <body>
         <canvas id="game"></canvas>
         <div id="buttons">
+            <button onclick="location.href='index.html#tetris'">Menu</button>
             <button id="pauseBtn">Pause</button>
             <button id="restartBtn">Restart</button>
         </div>
@@ -19,8 +20,9 @@
             <button class="left" data-input="moveLeft">&larr;</button>
             <button class="mid" data-input="hardDrop">DROP</button>
             <button class="right" data-input="moveRight">&rarr;</button>
-            <button class="down" data-input="MoveDown">&darr;</button>
+            <button class="down" data-input="moveDown">&darr;</button>
         </div>
+        <script src="shared.js"></script>
         <script src="tetris.js"></script>
     </body>
 </html>

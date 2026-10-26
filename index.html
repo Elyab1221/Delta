@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <link rel="stylesheet" href="Hub.css">
+        <title>DELTA game hub</title>
+    </head>
+    <body>
+        <section id="landing" class="screen">
+            <h1>DELTA gamehub</h1>
+            <p class="tagline"> snake and tetris.pick one and play</p>
+            <button id="startBtn" class="primary big">start</button>
+        </section>
+
+        <section id="games" class="screen" hidden>
+            <h2>choose a game</h2>
+            <div class="cards">
+                <button class="card" data-game="snake"><span class="icon">&#128013;</span>snake</button>
+                <button class="card" data-game="tetris"><span class="icon">&#129521;</span>tetris</button>
+            </div>
+            <button id="backToLanding" class="link">&larr;back</button>
+        </section>
+        <section id="menu" class="screen" hidden>
+            <h2 id="menuTitle"></h2>
+            <div class="options">
+                <button data-action="level">level</button>
+                <button data-action="play" class="primary">play</button>
+                <button data-action="score">Highscore</button>
+                <button data-action="help">help</button>
+            </div>
+            <P id="levelInfo" class="tagline"></P>
+            <div id="panel-level" class="panel" hidden>
+                <p>pick a level:</p>
+                <div id="levelButtons"></div>
+            </div>
+            <div id="panel-score" class="panel" hidden>
+            <ul id="scoreList"></ul>
+            <p class="note">
+                Highscores are saved only on the browser caache only so they are not permanent.
+                if u clear teh broweser data or u opened it in a private window say good bye to your highscores.
+            </p></div>
+
+            <div id="panel-help" class="panel"  hidden>
+                <div id="helpText"></div>
+            </div>
+            <button id="backToGames" class="link">&larr;Games</button>
+        </section>
+        <script src="shared.js"></script>
+        <script src="Hub.js"></script>
+    </body>
+</html>

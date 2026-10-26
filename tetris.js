@@ -52,8 +52,11 @@ const colorFont= 'white';
 const blockSize=30;
 const blockBackground= 'rgb(100, 100, 100)';
 const gravity=10;
-const gravacc=0.00001;
+const gravacc=0;
 const gravTreshold= 1000;
+const starLevel=getLevelFromUrl('tetris');
+const linesPerLevel=10;
+function levelSpeed(level){return 1+(level-1)*0.45;}
 
 const gridCol=10;
 const gridRow=20;
@@ -109,10 +112,12 @@ function getInitialState(){
     return {
         isGameOver:false,
         isPaused:false,
+        level:starLevel,
+        lines:0,
         score: 0,
         gravity:{
             progress:0,
-            speed:gravity,
+            speed:levelSpeed(starLevel),
         },
         currentPiece: createCurrentPieces(getRandomShapeId()),
         nextShapeId: getRandomShapeId(),
@@ -181,6 +186,9 @@ function handleCurrentPieceLanding(state){
 
     const clearedLines=clearCompleteLines(state.grid);
     state.score+=clearedLines;
+    state.lines+=clearedLines;
+    state.level=Math.min(10,starLevel+Math.floor(state.lines/linesPerLevel));
+    state.gravity.speed=levelSpeed(state.level);
 
     const newPiece=createCurrentPieces(state.nextShapeId);
     const {shape,position} =newPiece;
@@ -191,6 +199,7 @@ function handleCurrentPieceLanding(state){
     }
     else{
         state.isGameOver=true;
+        saveHighScore('tetris',starLevel,state.score)
     }
 }
 function moveCurrentPieceDown(state){
@@ -349,6 +358,8 @@ function render(ctx,state){
     const score=`${state.score}`.padStart(7,'0');
     ctx.fillText('score', sidebarContentX,sidebarContenty+blockSize*5);
     ctx.fillText(score,sidebarContentX,sidebarContenty+blockSize*6);
+    ctx.fillText('level',sidebarContentX,sidebarContenty+blockSize*8);
+    ctx.fillText(`${state.level}`,sidebarContentX,sidebarContenty+blockSize*9);
 
     if(state.isGameOver){
         drawOverlay(ctx,'game over!');
