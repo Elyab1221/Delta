@@ -46,7 +46,7 @@ function loadSelectedLevel(game){
     return found!==undefined?found:HUB_LEVELS[game][0];
 }
 function playUrl(game){
-    return `${game}.html?level=${selectedLevel[game]}`;
+    return `${game}/${game}.html?level=${selectedLevel[game]}`;
 }
 function updateLevelInfo(){
     $('levelInfo').textContent='selected: '+levelLabel(currentGame,selectedLevel[currentGame]);
