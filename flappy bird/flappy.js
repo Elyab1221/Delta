@@ -27,6 +27,8 @@ let velocityY=0;
 let gravity= 0.4;
 let gameOver=false;
 let score=0;
+let pipeTimer=0;
+let lastTime=0;
 
 window.onload=function(){
     board=document.getElementById("board");
@@ -44,17 +46,31 @@ window.onload=function(){
     bottomPipeImg= new Image();
     bottomPipeImg.src="./bottompipe.png";
     requestAnimationFrame(update);
-    setInterval(placePipes,1500);
+    // setInterval(placePipes,1500);
     document.addEventListener("keydown",moveBird);
+    board.addEventListener("pointerdown",function(e){
+        e.preventDefault();
+        moveBird({code:"Space"});});
+    // },{passive:false});
 }
-function update(){
+function update(time){
     requestAnimationFrame(update);
+    let delta=(time-lastTime)/16.66;
+    lastTime=time;
+    if(delta>3){
+        delta=3;
+    }
     if(gameOver){
         return;
     }
+    pipeTimer+=delta;
+    if(pipeTimer>=90){
+        placePipes();
+        pipeTimer=0
+    }
     context.clearRect(0,0,board.width,board.height);
-    velocityY+=gravity;
-    bird.y=Math.max(bird.y+velocityY,0);
+    velocityY+=gravity*delta;
+    bird.y=Math.max(bird.y+velocityY*delta,0);
     context.drawImage(birdImg,bird.x,bird.y,bird.width,bird.height);
     if (bird.y>board.height){
         gameOver= true;
@@ -62,7 +78,7 @@ function update(){
 
     for(let i=0;i<pipeArray.length;i++){
         let pipe=pipeArray[i];
-        pipe.x +=velocityX;
+        pipe.x +=velocityX*delta;
         context.drawImage(pipe.img,pipe.x,pipe.y,pipe.width,pipe.height);
 
         if(!pipe.passed && bird.x>pipe.x + pipe.width){
@@ -80,7 +96,16 @@ function update(){
     context.font="45px Arial";
     context.fillText(score,5,45);
     if(gameOver){
-        context.fillText("Game over!",5,90);
+        // context.fillText("Game over!",5,90);
+        context.fillStyle="rgba(0,0,0,0.5)";
+        context.fillRect(0,0,board.width,board.height);
+        context.fillStyle="white";
+        context.textAlign="center";
+        context.font="45px Arial";
+        context.fillText("Game over!",board.width/2,board.height/2);
+        context.font="20px Arial";
+        context.fillText("tap or press space to restart",board.width/2,board.height/2+40);
+        context.textAlign="left";
     }
 }
 function placePipes(){
