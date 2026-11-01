@@ -19,9 +19,9 @@ window.onload=function(){
     const boardE1=document.getElementById("board");
     boardE1.addEventListener("pointerdown",onBoardDown);
     boardE1.addEventListener("pointermove",onBoardMove);
-    boardE1.addEventListener("pointerUp",onBoardUp);
+    boardE1.addEventListener("pointerup",onBoardUp);
     boardE1.addEventListener("pointercancel",onBoardCancel);
-    boardE1.addEventListener("pointerLeave",onBoardLeave);
+    boardE1.addEventListener("pointerleave",onBoardLeave);
 }
 function setGame(){
     board=[];
@@ -34,7 +34,7 @@ function setGame(){
             let title=document.createElement("div");
             title.id=r.toString()+"-"+c.toString();
             title.classList.add("title");
-            title.addEventListener("click",setPiece);
+            // title.addEventListener("click",setPiece);
             document.getElementById("board").append(title);
         }
         board.push(row);
@@ -63,7 +63,7 @@ function columnFromPointer(e){
 }
 function showDisc(c){
     const disc=document.getElementById("drop-disc");
-    disc.className=(currPlayer=playerRed)? "red-piece": "yellow-piece";
+    disc.className=(currPlayer==playerRed)? "red-piece": "yellow-piece";
     disc.style.left=document.getElementById("0-"+c).offsetLeft+"px";
     disc.style.display="block";
 }
@@ -112,7 +112,7 @@ function dropPiece(c){
     showDisc(c);
     void disc.offsetHeight;
     const seconds=0.15 + r*0.07;
-    disc.style.transition="left 0.08s ease-out, top "+seconds+" s ease-in";
+    disc.style.transition="left 0.08s ease-out, top "+seconds+"s ease-in";
     disc.style.top=document.getElementById(r+"-"+c).offsetTop+"px";
     setTimeout(function(){
         if(myGame!==gameId) return;
@@ -160,7 +160,7 @@ function updateTurnText(){
 }
 function recordResult(winnerSymbol){
     if(mode==='bot'){
-        if(winnerSybol===humanPlayer) addToScore('connect4','bot');
+        if(winnerSymbol===humanPlayer) addToScore('connect4','bot');
     }else{
         addToScore('connect4','friend');
     }
@@ -286,7 +286,7 @@ function restartGame(){
     setGame();
 }
 function botMove(){
-    if(gameOver|| Animating) return;
+    if(gameOver|| animating) return;
     const bot=currPlayer;
     const human=(bot==playerRed)? playerYellow: playerRed;
     const options=[];
@@ -296,6 +296,9 @@ function botMove(){
     for(const c of options){
         if(wouldWin(c,bot)){dropPiece(c); return;}
     }
+    for(const c of options){
+        if(wouldWin(c,human)){dropPiece(c); return;}
+    }
     let safe=options.filter(c=>!givesWinAbove(c,bot,human));
     if(safe.length===0) safe=options;
     const best=Math.min(...safe.map(c=>Math.abs(c-3)));
@@ -304,25 +307,25 @@ function botMove(){
 }
 function countLine(r,c,dr,dc,who){
     let n=0;
-    r+=dr;c+=dr;
-    while(r>=0 && r<rows && c>=0 && columns && board[r][c]===who){
+    r+=dr;c+=dc;
+    while(r>=0 && r<rows && c>=0 && c<columns && board[r][c]===who){
         n++;r+=dr;c+=dc;
     }
     return n;
 }
-function makeFour(r,c,who){
+function makesFour(r,c,who){
     const directions=[[0,1],[1,0],[1,1],[1,-1]];
     return directions.some(([dr,dc])=>1+countLine(r,c,dr,dc,who)+countLine(r,c,-dr,-dc,who)>=4);
 }
 function wouldWin(c,who){
     const r=currColumns[c];
-    return r>=0 && makeFour(r,c,who);
+    return r>=0 && makesFour(r,c,who);
 }
 function givesWinAbove(c,me,opponent){
     const r=currColumns[c];
     if(r-1<0) return false;
     board[r][c]=me;
     const result=makesFour(r-1,c,opponent);
-    board[r][c]='';
+    board[r][c]=' ';
     return result;
 }

@@ -19,7 +19,9 @@ const FLAPPY_SETTINGS={
     easy:{speed:2, gap:170},
     medium:{speed:2.5 , gap:145},
     hard:{speed:3 , gap:120},
-}
+};
+flappyCfg=FLAPPY_SETTINGS[flappyLevel];
+const pipeSpacing=180;
 let pipeArray=[];
 let pipeWidth=64;
 let pipeHeight=512;

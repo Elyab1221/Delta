@@ -27,7 +27,7 @@ function handleCellClick(e){
     if (board[index]!=="" || !isGameActive){
         return;
     }
-    makeMove(index,player);
+    makeMove(index,currentPlayer);
     const winningCombo=checkWin(currentPlayer);
     if (winningCombo){
         winningCombo.forEach(i=>cells[i].classList.add("win"));
@@ -37,7 +37,7 @@ function handleCellClick(e){
         }
         else{
             addToScore('tic','friend');
-            endGame("player "+ currentPlayer+"wins! ");
+            endGame("player "+ currentPlayer+" wins! ");
         }
         return;
     }
@@ -53,8 +53,8 @@ function handleCellClick(e){
         isGameActive=false;
         botTimer=setTimeout(botTurn,500)
     }else{
-        currentPlayer=currentPlayer==="X"?"O":"X;"
-        status.innerText="player"+currentPlayer+"'s turn";
+        currentPlayer=currentPlayer==="X"?"O":"X"
+        status.innerText="player "+currentPlayer+"'s turn";
 }}
 function botTurn(){
     let BMove=findSMMove();
@@ -121,7 +121,7 @@ function restartGame(){
     clearTimeout(botTimer);
     board=["","","","","","","","",""];
     isGameActive=true;
-    currPlayer=player
+    currentPlayer=player;
     // status.innerText="your turn";
     showStartText();
     cells.forEach(cell=>{

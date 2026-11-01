@@ -85,7 +85,7 @@ const GAME_PAGES={
     connect4: 'connect4/conn.html',
 };
 function playUrl(game){
-    return encodeURI(`${GAME_PAGES[game]}? level=${selectedLevel[game]}`);
+    return encodeURI(`${GAME_PAGES[game]}?level=${selectedLevel[game]}`);
 }
 function updateLevelInfo(){
     $('levelInfo').textContent='selected: '+levelLabel(currentGame,selectedLevel[currentGame]);
@@ -123,6 +123,7 @@ function openGame(game){
     currentGame=game;
     selectedLevel[game]=loadSelectedLevel(game);
     $('menuTitle').textContent=gameInfo[game].title;
+    $('helpText').innerHTML=gameInfo[game].help;
     document.querySelector('#panel-level p').textContent=gameInfo[game].levelPrompt || 'pick a level:';
     renderLevels();
     updateLevelInfo();

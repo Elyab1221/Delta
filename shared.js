@@ -1,7 +1,10 @@
 
 const HUB_LEVELS = {
     snake: ['easy', 'medium', 'hard'],
-    tetris: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    tetris: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    flappy:['easy','medium','hard'],
+    tic:['friend','bot'],
+    connect4:['friend','bot']
 };
 function hubGet(key) {
     try { return localStorage.getItem(key); } catch (e) { return null; }
