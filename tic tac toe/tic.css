@@ -9,6 +9,9 @@ body{
 }
 .container{
     align-items: center;
+    height: 550px;
+    width: 550px;
+    margin-left: 10%;
 }
 h1{
     color: #333;

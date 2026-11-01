@@ -1,0 +1,38 @@
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    text-align: center;
+}
+#board{
+    position: relative;
+    height:540px;
+    width:630px;
+    background-color: blue;
+    border:10px solid navy;
+    margin:0 auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+.title{
+    height: 70px;
+    width: 70px;
+    margin: 5px;
+    background-color: white;
+    border-radius: 50%;
+    border: 5px solid navy;
+}
+.red-piece{
+    background-color: red;
+}
+.yellow-piece{
+    background-color: yellow;
+}
+#win-line{
+    position: absolute;
+    height: 10px;
+    background-color: green;
+    border: 2px solid darkgreen;
+    border-radius: 5px;
+    transform-origin: 0 50%;
+    z-index: 10;
+    pointer-events: none;
+}
