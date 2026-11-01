@@ -1,7 +1,7 @@
 
 const HUB_LEVELS = {
     snake: ['easy', 'medium', 'hard'],
-    tetris: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    tetris: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 };
 function hubGet(key) {
     try { return localStorage.getItem(key); } catch (e) { return null; }
@@ -24,6 +24,9 @@ function saveHighScore(game, level, score) {
         return true;
     }
     return false;
+}
+function addToScore(game, level, amount=1) {
+    saveHighScore(game, level, getHighScore(game, level) + amount);
 }
 const snakeBaseMs = { easy: 150, medium: 100, hard: 65 };
 function snakeSpeedMs(level, score = 0) {

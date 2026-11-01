@@ -5,6 +5,12 @@ let board=["","","","","","","","",""];
 let isGameActive=true;
 const player="X";
 const BOT="O";
+const mode=getLevelFromUrl('tic');
+let currentPlayer=player;
+let botTimer=null;
+function showStartText(){
+    status.innerText=mode==='bot'?"your turn": "player X's turn";
+}
 const winningConditions=[
     [0,1,2],
     [3,4,5],
@@ -22,20 +28,34 @@ function handleCellClick(e){
         return;
     }
     makeMove(index,player);
-    const winningCombo=checkWin(player);
+    const winningCombo=checkWin(currentPlayer);
     if (winningCombo){
-        winningCombo.forEach(index=>cells[index].classList.add("win"));
-        endGame("you win!");
+        winningCombo.forEach(i=>cells[i].classList.add("win"));
+        if(mode==='bot'){
+            addToScore('tic','bot');
+            endGame("you win!");
+        }
+        else{
+            addToScore('tic','friend');
+            endGame("player "+ currentPlayer+"wins! ");
+        }
         return;
     }
     if(board.every(cell=>cell!=="")){
-        endGame("draw!");
+        if(mode==='friend'){
+            addToScore('tic','friend');
+        }
+        endGame("draw")
         return;
     }
-    status.innerText="bot's turn";
-    isGameActive=false;
-    setTimeout(botTurn,500);
-}
+    if(mode==='bot'){
+        status.innerText="bot's turn";
+        isGameActive=false;
+        botTimer=setTimeout(botTurn,500)
+    }else{
+        currentPlayer=currentPlayer==="X"?"O":"X;"
+        status.innerText="player"+currentPlayer+"'s turn";
+}}
 function botTurn(){
     let BMove=findSMMove();
     makeMove(BMove,BOT);
@@ -98,9 +118,12 @@ function endGame(message){
     status.innerText=message;
 }
 function restartGame(){
+    clearTimeout(botTimer);
     board=["","","","","","","","",""];
     isGameActive=true;
-    status.innerText="your turn";
+    currPlayer=player
+    // status.innerText="your turn";
+    showStartText();
     cells.forEach(cell=>{
         cell.innerText="";
         cell.classList.remove("X","O","win");
@@ -108,3 +131,4 @@ function restartGame(){
 }
 cells.forEach(cell=>cell.addEventListener('click',handleCellClick));
 restartBtn.addEventListener('click',restartGame);
+showStartText();

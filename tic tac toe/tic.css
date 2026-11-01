@@ -53,7 +53,7 @@ h1{
 .cell .O{
     color: red;
 }
-#restart{
+#restart,#menuBtn{
     padding: 10px 20px;
     font-size: 1rem;
     background-color: #333;
@@ -61,6 +61,9 @@ h1{
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+#menuBtn{
+    margin-left: 10px;
 }
 .cell.win{
     position: relative;

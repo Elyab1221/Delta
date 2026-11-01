@@ -9,3 +9,16 @@ body{
     border: 5px solid burlywood;
     touch-action: none;
 }
+#menuBtn{
+    display: block;
+    margin: 8px auto;
+    padding: 8px 20px;
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    background-color: #333;
+    border: 2px solid burlywood;
+    border: 2px solid burlywood;
+    border-radius: 8px;
+    cursor: pointer;
+}

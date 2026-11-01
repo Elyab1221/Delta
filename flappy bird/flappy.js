@@ -14,7 +14,12 @@ let bird={
     width:birdWidth,
     height:birdHeight
 }
-
+const flappyLevel=getLevelFromUrl('flappy');
+const FLAPPY_SETTINGS={
+    easy:{speed:2, gap:170},
+    medium:{speed:2.5 , gap:145},
+    hard:{speed:3 , gap:120},
+}
 let pipeArray=[];
 let pipeWidth=64;
 let pipeHeight=512;
@@ -22,7 +27,7 @@ let pipeX=boardWidth;
 let pipeY=0;
 let topPipeImg;
 let bottomPipeImg;
-let velocityX=-2;
+let velocityX=-flappyCfg.speed;
 let velocityY=0;
 let gravity= 0.4;
 let gameOver=false;
@@ -64,7 +69,7 @@ function update(time){
         return;
     }
     pipeTimer+=delta;
-    if(pipeTimer>=90){
+    if(pipeTimer>=pipeSpacing/flappyCfg.speed){
         placePipes();
         pipeTimer=0
     }
@@ -94,8 +99,9 @@ function update(time){
     }
     context.fillStyle= "white";
     context.font="45px Arial";
-    context.fillText(score,5,45);
+    context.fillText(Math.floor(score),5,45);
     if(gameOver){
+        saveHighScore('flappy', flappyLevel,Math.floor(score));
         // context.fillText("Game over!",5,90);
         context.fillStyle="rgba(0,0,0,0.5)";
         context.fillRect(0,0,board.width,board.height);
@@ -113,7 +119,7 @@ function placePipes(){
         return;
     }
     let randomPipeY=pipeY-pipeHeight/4-Math.random()*(pipeHeight/2);
-    let openingSpace= board.height/5;
+    let openingSpace= flappyCfg.gap;
     let topPipe={
         img: topPipeImg,
         x: pipeX,

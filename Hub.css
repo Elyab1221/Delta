@@ -84,7 +84,8 @@ button.link{
     font-size: 16px;
 }
 .cards{
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 15px;
     width:100%;
 }
@@ -98,6 +99,9 @@ button.link{
     font-size:24px ;
 }
 .card .icon{font-size: 56px;}
+.card:last-child:nth-child(odd){
+    grid-column: 1 / -1;
+}
 .options{
     display: grid;
     grid-template-columns: 1fr 1fr;
