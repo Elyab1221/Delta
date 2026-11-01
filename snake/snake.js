@@ -17,6 +17,7 @@ let timer;
 let running= false;
 let xvelocity= unitsize;
 let yvelocity= 0;
+movedX=unitsize,movedY=0;
 let foodx;
 let foody;
 let score=0;
@@ -104,6 +105,8 @@ function drawFood(){
 function moveSnake(){
     const head={x:snake[0].x+xvelocity,
                 y:snake[0].y+yvelocity};
+                movedX=xvelocity;
+                movedY=yvelocity;
 
         snake.unshift(head);
         if(snake[0].x==foodx && snake[0].y==foody){
@@ -159,10 +162,10 @@ function changeDirection(event){
     const RIGHT=39;
     const DOWN=40;
 
-    const goUp=(yvelocity== -unitsize);
-    const goDown=(yvelocity== unitsize);
-    const goRight=(xvelocity== unitsize);
-    const goLeft=(xvelocity== -unitsize);
+    const goUp=(movedY== -unitsize);
+    const goDown=(movedY== unitsize);
+    const goRight=(movedX== unitsize);
+    const goLeft=(movedX== -unitsize);
  if(keyPressed==80){togglePause(); return;}
  if(keyPressed==82){resetGame();return;}
  if(pause) return;
@@ -223,6 +226,8 @@ function resetGame(){
     score=0;
     xvelocity=unitsize;
     yvelocity=0;
+    movedX=unitsize;
+    movedY=0
     snake =[
     {x:unitsize*4, y:0},
     {x:unitsize*3, y:0},

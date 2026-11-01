@@ -185,7 +185,7 @@ function handleCurrentPieceLanding(state){
     attachToGrid(state.grid,state.currentPiece);
 
     const clearedLines=clearCompleteLines(state.grid);
-    state.score+=clearedLines;
+    state.score+=clearedLines*state.level;
     state.lines+=clearedLines;
     state.level=Math.min(10,starLevel+Math.floor(state.lines/linesPerLevel));
     state.gravity.speed=levelSpeed(state.level);

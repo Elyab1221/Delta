@@ -9,7 +9,7 @@ const gameInfo={
     tetris:{
         title:'tetris',
         help:
-        `<p><b> Goal:</b> fill whole rows with blocks to clear them . your score is the number of rows cleared.</p>
+        `<p><b> Goal:</b> fill whole rows with blocks to clear them . every row you clear gives you equal to your current level so the higher the level the more each row is worth.</p>
         <p><b>Computer: </b> &larr; &rarr; move,&uarr;rotate,&darr;fall faster, space dropos the piece instantly,p pauses,R restarts.</p>
         <p><b>Phone: </b> use the pad under board: &#8635; rotates, &larr; &rarr; move, &darr; falls faster, DROP in the middle drops the piece.</p>
         <p><b> pick a level to start(1-10)</b>, the more the level the faster the pieces fall</p>`

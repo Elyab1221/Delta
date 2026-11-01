@@ -4,6 +4,13 @@
 body{
     font-family:Arial, Helvetica, sans-serif;
     text-align: center;
+    background-color: cornflowerblue;
+}
+button{
+    font-size: 25px;
+    background-color: bisque;
+    padding: 8px;
+    margin: 15px;
 }
 #board{
     position: relative;
@@ -12,6 +19,8 @@ body{
     background-color: blue;
     border:10px solid navy;
     margin: calc(var(--slot) s+ 10px) auto 0;
+    margin-left: 34%;
+    margin-bottom: 15px;
     display: flex;
     flex-wrap: wrap;
     touch-action: none;
