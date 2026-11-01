@@ -22,7 +22,9 @@ function handleCellClick(e){
         return;
     }
     makeMove(index,player);
-    if (checkWin(player)){
+    const winningCombo=checkWin(player);
+    if (winningCombo){
+        winningCombo.forEach(index=>cells[index].classList.add("win"));
         endGame("you win!");
         return;
     }
@@ -37,7 +39,9 @@ function handleCellClick(e){
 function botTurn(){
     let BMove=findSMMove();
     makeMove(BMove,BOT);
-    if (checkWin(BOT)){
+    const winningCombo=checkWin(BOT);
+    if (winningCombo){
+        winningCombo.forEach(index=>cells[index].classList.add("win"));
         endGame("bot wins!");
         return;
     }
@@ -79,9 +83,15 @@ function makeMove(index,symbol){
     cells[index].classList.add(symbol)
 }
 function checkWin(symbol){
-    return winningConditions.some(combo=>{
-        return combo.every(index=>board[index]===symbol);
+    let winningCombo= null;
+    winningConditions.forEach(combo=>{
+        let isWin=combo.every(index=>board[index]===symbol);
+        if(isWin){
+            winningCombo=combo;
+        }
+        return isWin;
     });
+    return winningCombo;
 }
 function endGame(message){
     isGameActive=false;
@@ -93,7 +103,7 @@ function restartGame(){
     status.innerText="your turn";
     cells.forEach(cell=>{
         cell.innerText="";
-        cell.classList.remove("X","O");
+        cell.classList.remove("X","O","win");
     });
 }
 cells.forEach(cell=>cell.addEventListener('click',handleCellClick));

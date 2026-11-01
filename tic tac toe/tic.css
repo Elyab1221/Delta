@@ -1,6 +1,6 @@
 body{
     font-family: Arial, Helvetica, sans-serif;
-    background-color: white;
+    background-color: rgb(112, 4, 4);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -28,9 +28,10 @@ h1{
     margin-bottom: 20px;
 }
 .cell{
-    background-color: #550000;
+    background-color: #580101;
     border: 2px solid burlywood;
     font-weight: bold;
+    color: rgb(85, 79, 79);
     display: flex;
     font-size: 2rem;
     justify-content: center;
@@ -57,4 +58,28 @@ h1{
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+.cell.win{
+    position: relative;
+    back-ground-color: #00ff00;
+}
+.cell.win::after{
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%) scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s ease-out;
+    z-index: 10;
+}
+.cell.win.X::after {
+    background-color: green;
+    transform: translateY(-50%) scaleX(1);
+}
+.cell.win.O::after {
+    background-color: rgb(4, 112, 116);
+    transform: translateY(-50%) scaleX(1);
 }
