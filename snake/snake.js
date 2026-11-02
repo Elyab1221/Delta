@@ -17,7 +17,7 @@ let timer;
 let running= false;
 let xvelocity= unitsize;
 let yvelocity= 0;
-movedX=unitsize,movedY=0;
+movedX=unitsize,movedY=0
 let foodx;
 let foody;
 let score=0;
