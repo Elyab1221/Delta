@@ -76,7 +76,7 @@ I wanted to recreate that feeling directly in the browser for both desktop and m
 | **Flappy Bird** | `Space`, `↑`, or `X` to flap | Tap the screen | Fly through the pipe gaps without touching the ground or pipes |
 | **Tic-Tac-Toe** | Mouse click on empty cell | Tap empty cell | Connect 3 of your marks (`X` or `O`) in a row |
 | **Connect 4** | Click column to drop disc | Tap column to drop disc | Connect 4 of your colored discs in a row |
-| **Pause / Restart** | `P` (Pause), `R` (Restart| On-screen buttons | Pause or reset your current run |
+| **Pause / Restart** | `P` (Pause), `R` (Restart) | On-screen buttons | Pause or reset your current run |
 
 ---
 
@@ -97,7 +97,7 @@ No dependencies, node modules, or build steps required!
    ```
    *(Or click the green **Code** button → **Download ZIP** and extract it).*
 2. Double-click `index.html` to open it in any web browser.
-3. To test mobile views on a computer, press `F12` (Developer Tools→ `Ctrl + Shift + M` (Device Toolbarand select a mobile device.
+3. To test mobile views on a computer, press `F12` (Developer Tools) → `Ctrl + Shift + M` (Device Toolbar) and select a mobile device.
 
 ---
 
@@ -131,7 +131,7 @@ Delta game hub/
 ## 📚 What I Learned
 
 - How real-time game loops work (tick, update, draw, repeat) and how `requestAnimationFrame` keeps gameplay smooth across different refresh rates.
-- Managing game state machines (menus, active play, paused, game overcleanly without spaghetti code.
+- Managing game state machines (menus, active play, paused, game over) cleanly without spaghetti code.
 - Math and coordinate geometry in games: grid matrices, bounding box collisions, and trigonometry (`Math.atan2`, `Math.hypot`) for drawing dynamic winning connection lines.
 - Debugging silent errors: CSS selector typos, loop boundary edge-cases, and variable naming consistency.
 
